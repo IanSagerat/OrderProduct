@@ -5,28 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add User</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-        }
-
-        #container {
-            background-color: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            width: 80%;
-            max-width: 600px;
-        }
-
         form {
-            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top:20px;
         }
 
         label {
@@ -35,10 +18,11 @@
         }
 
         input {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 15px;
+            padding: 10px;
+            margin-bottom: 16px;
+            width: 50%;
             box-sizing: border-box;
+
         }
 
         button {
@@ -71,6 +55,10 @@
 </head>
 <body>
 
+<?php
+include_once 'welcome.php';
+?>
+
 <div id="container">
     <h2 style="text-align: center;">Add User</h2>
 
@@ -80,8 +68,7 @@
 
         <label for="email">Email:</label>
         <input type="text" id="email" name="email" required>
-        
-        <a href="index.php" class="add-button">Back</a>
+    
         <button type="submit">Insert</button>
     </form>
 </div>

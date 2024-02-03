@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
@@ -7,26 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Retrieve Data</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-        }
-
-        #container {
-            background-color: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            width: 80%;
-            max-width: 600px;
-        }
-
         table {
             border-collapse: collapse;
             width: 100%;
@@ -62,6 +40,10 @@
             cursor: pointer;
             border-radius: 4px;
         }
+        
+        #container h2{
+            text-transform:uppercase;
+        }
 
         .edit-button {
             background-color: #2196f3;
@@ -85,10 +67,12 @@
 </head>
 <body>
 
+<?php
+include_once 'welcome.php';
+?>
+
 <div id="container">
-    <h2 style="text-align: center;">User Data</h2>
-
-
+    <h2 style="text-align: center;">Patient Data</h2>
 <?php
 include 'includes/db_connection.php';
 
@@ -96,7 +80,7 @@ try {
     $conn = connectDB();
 
     if ($conn) {
-        $sql = "SELECT id, name, email FROM users";
+        $sql = "SELECT patient_id, patient_name, patient_email FROM patienttable";
         $stmt = $conn->prepare($sql);
         $stmt->execute();
 
@@ -104,24 +88,24 @@ try {
 
         echo "<table>
                 <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Email</th>
+                    <th>Patient ID</th>
+                    <th>Patient Name</th>
+                    <th>Patient Email</th>
                     <th>Action</th>
                 </tr>";
         foreach ($result as $row) {
             echo "<tr>
-                    <td>{$row['id']}</td>
-                    <td>{$row['name']}</td>
-                    <td>{$row['email']}</td>
+                    <td>{$row['patient_id']}</td>
+                    <td>{$row['patient_name']}</td>
+                    <td>{$row['patient_email']}</td>
                     <td class='action'>
                         <form action='edit.php' method='post'>
-                            <input type='hidden' name='edit_id' value='{$row['id']}'>
+                            <input type='hidden' name='edit_id' value='{$row['patient_id']}'>
                             <button type='submit' class='edit-button'>Edit</button>
                         </form>
-                        <form action='orders.php' method='post'>
-                            <input type='hidden' name='order_id' value='{$row['id']}'>
-                            <button type='submit' class='edit-button'>Make an Order</button>
+                        <form action='schedule.php' method='post'>
+                            <input type='hidden' name='app_id' value='{$row['patient_id']}'>
+                            <button type='submit' class='edit-button'>Make a Schedule</button>
                         </form>
                     </td>
                 </tr>";
@@ -139,9 +123,7 @@ try {
 
 
 <div class="button-container">
-    <a href="insert.php" class="add-button">Add User</a>
-    <a href="product.php" class="add-button">List of Product</a>
-    <a href="transaction.php" class="add-button">List of Orders</a>
+    <a href="insert.php" class="add-button">Add Patient</a>
 </div>
 
 </div>

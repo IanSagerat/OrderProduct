@@ -1,7 +1,7 @@
 <?php
 function connectDB() {
     $host = "localhost";
-    $dbname = "testdb";
+    $dbname = "hostipal";
     $username = "root";
     $password = "";
 

@@ -5,25 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Retrieve Products</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-        }
-
-        #container {
-            background-color: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            width: 80%;
-            max-width: 600px;
-        }
 
         table {
             border-collapse: collapse;
@@ -77,8 +58,12 @@
 </head>
 <body>
 
+<?php
+include_once 'welcome.php';
+?>
+
 <div id="container">
-    <h2 style="text-align: center;">Product Data</h2>
+    <h2 style="text-align: center;">List of Schedule</h2>
 
 <?php
 include 'includes/db_connection.php';
@@ -87,7 +72,7 @@ try {
     $conn = connectDB();
 
     if ($conn) {
-        $sql = "SELECT product_id, product_name, product_stock FROM producttable";
+        $sql = "SELECT sched_id, sched_date, sched_status FROM scheduletable";
         $stmt = $conn->prepare($sql);
         $stmt->execute();
 
@@ -95,20 +80,20 @@ try {
 
         echo "<table>
                 <tr>
-                    <th>Product ID</th>
-                    <th>Name</th>
-                    <th>Stocks</th>
+                    <th>Schedule ID</th>
+                    <th>Date</th>
+                    <th>Status</th>
                     <th>Action</th>
                 </tr>";
         foreach ($result as $row) {
             echo "<tr>
-                    <td>{$row['product_id']}</td>
-                    <td>{$row['product_name']}</td>
-                    <td>{$row['product_stock']}</td>
+                    <td>{$row['sched_id']}</td>
+                    <td>{$row['sched_date']}</td>
+                    <td>{$row['sched_status']}</td>
                     <td>
-                        <form action='edit_product.php' method='post'>
-                            <input type='hidden' name='edit_product_id' value='{$row['product_id']}'>
-                            <button type='submit' class='edit-button'>Edit</button>
+                        <form action='edit_schedule.php' method='post'>
+                            <input type='hidden' name='edit_schedule_id' value='{$row['sched_id']}'>
+                            <button type='submit' class='edit-button'>Edit Schedule</button>
                         </form>
                     </td>
                 </tr>";
@@ -125,8 +110,7 @@ try {
 ?>
 
 <div class="button-container">
-    <a href="index.php" class="add-button">Back</a>
-    <a href="add_product.php" class="add-button">Add Product</a>
+    <a href="add_schedule.php" class="add-button">Add Schedule</a>
 </div>
 
 </div>

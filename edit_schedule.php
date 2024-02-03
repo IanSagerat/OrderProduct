@@ -5,27 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit User</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-        }
-
-        #container {
-            background-color: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            width: 80%;
-            max-width: 600px;
-        }
-
         form {
+            padding-top:20px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -35,10 +16,10 @@
             margin-bottom: 8px;
         }
 
-        input {
+        input, select {
             padding: 10px;
             margin-bottom: 16px;
-            width: 100%;
+            width: 50%;
             box-sizing: border-box;
         }
 
@@ -62,8 +43,12 @@
 </head>
 <body>
 
+<?php
+include_once 'welcome.php';
+?>
+
 <div id="container">
-    <h2 style="text-align: center;">Edit Product </h2>
+    <h2 style="text-align: center;">EDIT SCHEDULE</h2>
 
     <?php
     include 'includes/db_connection.php';
@@ -71,11 +56,11 @@
     try {
         $conn = connectDB();
 
-        if ($conn && isset($_POST['edit_product_id'])) {
-            $prodID = $_POST['edit_product_id'];
-            $sql = "SELECT product_id, product_name, product_stock FROM producttable WHERE product_id = :pid";
+        if ($conn && isset($_POST['edit_schedule_id'])) {
+            $prodID = $_POST['edit_schedule_id'];
+            $sql = "SELECT sched_id, sched_date, sched_status FROM scheduletable WHERE sched_id = :sdid";
             $stmt = $conn->prepare($sql);
-            $stmt->bindParam(':pid', $prodID);
+            $stmt->bindParam(':sdid', $prodID);
             $stmt->execute();
 
             $userData = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -83,16 +68,19 @@
             if ($userData) {
                 // User data found, render the edit form
     ?>
-                <form action="includes/update_prod.php" method="post">
-                    <input type="hidden" name="pid" value="<?php echo $userData['product_id']; ?>">
-                    <label for="name">Name:</label>
-                    <input type="text" name="pname" id="pname" value="<?php echo $userData['product_name']; ?>">
+                <form action="includes/update_sched.php" method="post">
+                    <input type="hidden" name="sdid" value="<?php echo $userData['sched_id']; ?>">
+                    <label for="name">Date:</label>
+                    <input type="date" name="sched_date" id="sched_date" value="<?php echo $userData['sched_date']; ?>">
 
-                    <label for="email">Email:</label>
-                    <input type="text" name="pstock" id="pstock" value="<?php echo $userData['product_stock']; ?>">
+                    <label for="status">Status:</label>
+                    <select name="sched_status" id="sched_status">
+                        <option value="Available" <?php echo ($userData['sched_status'] == 'Available') ? 'selected' : ''; ?>>Available</option>
+                        <option value="NotAvailable" <?php echo ($userData['sched_status'] == 'NotAvailable') ? 'selected' : ''; ?>>Not Available</option>
+                    </select>
 
                     <div class="button-container">
-                        <button type="submit" class="update-button">Update Product</button>
+                        <button type="submit" class="update-button">Update Schedule</button>
                     </div>
                 </form>
     <?php
